@@ -1,3 +1,5 @@
+English | [简体中文](03-red-evidence.zh-CN.md)
+
 # Step 4 artifact — Independent tests & red evidence
 
 The reviewer wrote `04-implementation/test_invite.py` from the approved checklist (02) alone — 8 tests, one per case, named by case ID. Two additional scenarios were kept **hidden** by the reviewer (INV-H1, INV-H2); they exist in the test file's hidden section but were not disclosed to the writer and are not counted in the step-3 approval.

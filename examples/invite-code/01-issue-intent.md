@@ -1,3 +1,5 @@
+English | [简体中文](01-issue-intent.zh-CN.md)
+
 # Step 1 artifact — Issue #101: Join a workspace by invite code
 
 ## Intent (drafted by the writer, approved by the decision-maker)

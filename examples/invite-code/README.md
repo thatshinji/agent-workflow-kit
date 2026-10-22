@@ -1,3 +1,5 @@
+English | [简体中文](README.zh-CN.md)
+
 # Example: "Join by invite code" — one feature through all eight steps
 
 A fictional but realistic mini-feature, walked end-to-end through the pipeline from `templates/AGENTS.md`. Every step's artifact is a real file in this folder, so you can see exactly what each stage produces and consumes. The code is small Python (stdlib only) — the workflow, not the stack, is the point.

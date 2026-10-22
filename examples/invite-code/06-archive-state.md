@@ -1,3 +1,5 @@
+English | [简体中文](06-archive-state.zh-CN.md)
+
 # Step 8 artifact — Archive state after merge
 
 Merging is not the end of the pipeline. Four archive actions close the loop:

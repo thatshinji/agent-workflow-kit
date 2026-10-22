@@ -1,3 +1,5 @@
+English | [简体中文](02-behavior-cases.zh-CN.md)
+
 # Step 2 artifact — Behavior checklist for "Join by invite code"
 
 > Written by the writer from the approved contract (01), in the format of `templates/test-cases/TEMPLATE.md`. This is the version the decision-maker approved at the step-3 gate. The final archived version — after hidden scenarios are unsealed and lessons are added at step 8 — is shown in [06-archive-state.md](06-archive-state.md).

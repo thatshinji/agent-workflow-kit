@@ -1,3 +1,5 @@
+English | [简体中文](05-review-round.zh-CN.md)
+
 # Steps 6–7 artifact — Review round & reconciliation (Issue #101)
 
 ## Reviewer output (round 1)
