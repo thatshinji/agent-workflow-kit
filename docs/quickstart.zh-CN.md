@@ -14,19 +14,30 @@
 
 ## 第 0 步 — 拿到 kit（2 分钟）
 
-把本仓库 clone 到你的项目旁边，或下载最新 Release 的源码包。接下来都是从它里面往外拷文件，不需要安装任何东西。
+把本仓库 clone 到你的项目旁边，或下载最新 Release 的源码包。kit 本身不需要安装任何东西；下一步会把需要的文件一键铺进你的仓库。
 
-## 第 1 步 — 拷模板（5 分钟）
+## 第 1 步 — 把脚手架铺进你的仓库（1 分钟）
 
-把每份模板复制到**你的**仓库的对应位置（完整对照表也在 [templates/README.md](../templates/README.md)）：
+在**你的**仓库根目录运行安装脚本：
+
+```bash
+cd <你的仓库>
+python3 /path/to/agent-workflow-kit/scripts/install.py
+```
+
+它会把下面这张表里的模板全部拷到位，外加门禁脚本和它的配置。已存在的文件绝不覆盖——冲突项会跳过并报告（`--force` 才覆盖；`--dry-run` 只预览计划）。要中文模板就加 `--lang zh-CN`（落地时用无后缀名，你的仓库保持单语）；要某个技术栈的 lint 起步配置就加 `--stack go`（或 `web` / `swift` / `python`）。
+
+想手动拷贝也可以，对照表就是这张：
 
 | kit 里的文件 | 你仓库里的位置 |
 |---|---|
 | `templates/AGENTS.md` | `AGENTS.md`（根目录） |
 | `templates/REVIEW.md` | `REVIEW.md`（根目录） |
 | `templates/test-cases/*` | `docs/test-cases/` |
-| `templates/project-management/*` | `docs/project-management/`（`platform-playbook.md` 按端改名，`reviews-ledger.yaml` 放到 `reviews/ledger.yaml`） |
-| `templates/specs/coding-standards.md` | `docs/specs/coding-standards.md` |
+| `templates/project-management/*` | `docs/project-management/`（`platform-playbook.md` 按端改名） |
+| `templates/specs/coding-standards.md` | `docs/tech-specs/coding-standards.md` |
+| `scripts/check_tdd_compliance.py` | `scripts/` |
+| `scripts/tdd-check.config.example.json` | `tdd-check.config.json`（根目录） |
 
 ## 第 2 步 — 填 8 个槽位（15 分钟 – 半天）
 

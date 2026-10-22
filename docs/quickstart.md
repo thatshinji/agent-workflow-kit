@@ -14,19 +14,30 @@ This guide takes a fresh repository from zero to "ready for its first feature un
 
 ## Step 0 — Get the kit (2 min)
 
-Clone this repository next to yours, or download the latest release's source archive. You will copy files out of it; you do not install anything.
+Clone this repository next to yours, or download the latest release's source archive. Nothing gets installed into the kit itself; the next step scaffolds the files into your repository for you.
 
-## Step 1 — Copy the templates (5 min)
+## Step 1 — Scaffold your repository (1 min)
 
-Copy each template to its destination in **your** repository (full mapping also in [templates/README.md](../templates/README.md)):
+Run the installer from the root of **your** repository:
+
+```bash
+cd <your-repo>
+python3 /path/to/agent-workflow-kit/scripts/install.py
+```
+
+It copies every template to its destination (table below), plus the gate script and its config. It never overwrites an existing file — conflicts are skipped and reported (`--force` overrides; `--dry-run` previews the plan). For the Chinese templates add `--lang zh-CN` (they land under plain names, so your repository stays monolingual). For a lint starter config for your stack add `--stack go` (or `web` / `swift` / `python`).
+
+Prefer to copy by hand? The mapping is:
 
 | From the kit | To your repo |
 |---|---|
 | `templates/AGENTS.md` | `AGENTS.md` (root) |
 | `templates/REVIEW.md` | `REVIEW.md` (root) |
 | `templates/test-cases/*` | `docs/test-cases/` |
-| `templates/project-management/*` | `docs/project-management/` (rename `platform-playbook.md` per platform, `reviews-ledger.yaml` → `reviews/ledger.yaml`) |
-| `templates/specs/coding-standards.md` | `docs/specs/coding-standards.md` |
+| `templates/project-management/*` | `docs/project-management/` (rename `platform-playbook.md` per platform) |
+| `templates/specs/coding-standards.md` | `docs/tech-specs/coding-standards.md` |
+| `scripts/check_tdd_compliance.py` | `scripts/` |
+| `scripts/tdd-check.config.example.json` | `tdd-check.config.json` (root) |
 
 ## Step 2 — Fill the eight slots (15 min – half a day)
 
