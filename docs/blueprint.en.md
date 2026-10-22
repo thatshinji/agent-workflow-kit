@@ -107,7 +107,7 @@ One hard rule guards against "tests back-filled to fit the implementation": **ac
 - **Rule level is binding force**: key rules must be error-level — a warning's exit code is 0, CI stays green, and an agent weighing trade-offs will keep the warning, which equals having no rule. Warnings are allowed only for purely informational hints.
 - **Incremental blocking, legacy exemption**: a brand-new project may block everything from day one; when introducing this into an existing codebase, block only new and changed lines and let the legacy be paid down as it is touched — otherwise the whole repo goes red on adoption day and forces fake fixes.
 - **One-command gate**: the repository provides a single entry point (e.g. `make pr-check` or an equivalent script) chaining formatting, lint, the TDD compliance check (production code paired with tests, presence of negative assertions), the full test suite, two-way migration verification, and the build; a PR may be opened only at 100% local pass, and CI re-runs the same standard.
-- Tool versions must be pinned; floating dependencies like `@latest` are banned — CI results should depend only on the repository's contents.
+- Tool versions must be written in full; floating dependencies like `@latest` are banned — CI results should depend only on the repository's contents.
 
 ### 1.11 The Accumulation Loop (four archive items after merge)
 
@@ -252,7 +252,7 @@ Trimming principle: a mechanism may be deferred, but the standards inside an ado
 - [ ] Repository and task pool ready; milestones defined by exit conditions
 - [ ] All 8 slots in §5 filled and written into AGENTS.md / REVIEW.md
 - [ ] The 10-document structure built (§3), contents at minimal version
-- [ ] One-command gate runs green on the empty repo; key lint rules at error level; tool versions pinned
+- [ ] One-command gate runs green on the empty repo; key lint rules at error level; tool versions written in full
 - [ ] TDD compliance check script adapted to this stack's path rules
 - [ ] First feature chosen (smallest real closed loop), ready for a full trial run with friction recorded
 - [ ] Trial-run retrospective scheduled; its conclusions written back into each document's change log

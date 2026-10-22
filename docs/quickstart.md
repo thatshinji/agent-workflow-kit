@@ -20,7 +20,7 @@ From the root of **your** repository:
 curl -fsSL https://raw.githubusercontent.com/thatshinji/agent-workflow-kit/v0.3.2/scripts/install.py | python3 -
 ```
 
-The script downloads the kit (pinned at v0.3.2) into a temp directory and scaffolds everything into your repository: all templates (mapping below), the gate script, and its config. It never overwrites an existing file — conflicts are skipped and reported (`--force` overrides). To preview without writing, append `--dry-run` after `python3 -`. For the Chinese templates: `... | python3 - --lang zh-CN` (they land under plain names, so your repository stays monolingual). For a lint starter for your stack add `--stack go` (or `web` / `swift` / `python`). For another version: `--kit-version <tag>`, or `--kit-version latest`.
+The script downloads the kit (version v0.3.2) into a temp directory and scaffolds everything into your repository: all templates (mapping below), the gate script, and its config. It never overwrites an existing file — conflicts are skipped and reported (`--force` overrides). To preview without writing, append `--dry-run` after `python3 -`. For the Chinese templates: `... | python3 - --lang zh-CN` (they land under plain names, so your repository stays monolingual). For a lint starter for your stack add `--stack go` (or `web` / `swift` / `python`). For another version: `--kit-version <tag>`, or `--kit-version latest`.
 
 Prefer not to pipe a remote script? Clone this repository and run `python3 /path/to/agent-workflow-kit/scripts/install.py` — same result. Copying by hand also works; the mapping is:
 
