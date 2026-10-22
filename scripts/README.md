@@ -1,3 +1,5 @@
+English | [简体中文](README.zh-CN.md)
+
 # Scripts
 
 Stack-agnostic gate scripts for the workflow. Everything here is zero-dependency and safe to copy into any repository.
