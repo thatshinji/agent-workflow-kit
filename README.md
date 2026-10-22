@@ -19,22 +19,27 @@ Most AI coding workflows fail in predictable ways: the agent writes tests that m
 - **Machines enforce, documents explain.** Anything a machine can check becomes a lint rule or a CI gate. Critical rules are `error`, never `warn` — a warning that keeps CI green is not a rule.
 - **Everything is archived.** Hidden acceptance scenarios, review lessons, and coverage status are written back into the library after every merge, so each mistake is paid for exactly once.
 
-Full design document: [docs/blueprint.md](docs/blueprint.md) (Chinese for now; English translation is on the roadmap).
+Full design document: [docs/blueprint.md](docs/blueprint.md) — bilingual: [中文](docs/blueprint.md) / [English](docs/blueprint.en.md).
 
 ## What's in the kit
 
 ```text
-docs/blueprint.md   The full design: 12 core mechanisms, 5 adoption phases,
-                    per-stack adaptation tables, project "slots", anti-patterns
+docs/blueprint*.md  The full design (Chinese + English editions): 12 core
+                    mechanisms, 5 adoption phases, per-stack adaptation
+                    tables, project "slots", anti-patterns
 templates/          Blank templates for all 11 workflow documents — AGENTS.md,
                     REVIEW.md, review protocol, TDD spec, contract checklist,
                     coding standards, project-management set, platform playbook,
                     review ledger, and the test-case library (TEMPLATE + INDEX)
-scripts/            The TDD compliance gate (zero-dependency Python): production
-                    changes must ship with paired tests containing negative
-                    assertions. Configurable per stack; ships with its own tests
-examples/           A complete worked example: "join by invite code" through all
-                    eight steps, with runnable code and real red/green evidence
+                    — plus lint-starters/ with per-stack lint configs
+scripts/            The one-command installer (install.py: scaffolds the whole
+                    kit into your repository, never overwrites existing files)
+                    and the TDD compliance gate (zero-dependency Python):
+                    production changes must ship with paired tests containing
+                    negative assertions. Both ship with their own tests
+examples/           Three worked examples: "join by invite code" (the full
+                    pipeline, runnable code, real red/green evidence), a
+                    Delta-mode second platform, and a hotfix lane
 ```
 
 Start with the [worked example](examples/invite-code/) if you want to see the workflow's artifacts before reading the theory.
@@ -44,12 +49,12 @@ Start with the [worked example](examples/invite-code/) if you want to see the wo
 **Hands-on path**: follow the [Quickstart](docs/quickstart.md) ([简体中文](docs/quickstart.zh-CN.md)) — a 30-minute guided adoption: copy the templates, fill the eight slots, wire the gate, run your first feature. The conceptual path:
 
 1. Read the [blueprint](docs/blueprint.md) — it defines the 12 core mechanisms, the five adoption phases, and the per-stack adaptation tables.
-2. Copy the [templates](templates/) into your repository (the templates README maps each file to its destination) and fill in the eight project "slots" (data-isolation dimension, project invariants, failure definitions, high-risk paths, ★ decisions, mandatory failure branches, design source, risk grading).
+2. Scaffold your repository — run [scripts/install.py](scripts/) from your repo root (or copy the [templates](templates/) by hand; the templates README maps each file to its destination) — and fill in the eight project "slots" (data-isolation dimension, project invariants, failure definitions, high-risk paths, ★ decisions, mandatory failure branches, design source, risk grading).
 3. Wire the [gate script](scripts/) into CI, then run one small real feature through the full pipeline before scaling up.
 
 ## Status
 
-**v0.2.0** — Full Chinese documentation: every document in the kit now ships with a 简体中文 edition beside the English original. (v0.1.0 was the first public release: blueprint, full template set, gate script, and one complete worked example.) On the roadmap: the blueprint in English, more examples (Delta-mode second platform, hotfix flow), and lint starter configs per stack.
+**v0.3.0** — The roadmap is complete: the blueprint is bilingual (Chinese + English), Delta-mode and hotfix worked examples join the invite-code example, per-stack lint starter packs are in, and the one-command installer scaffolds the whole kit into your repository. (Earlier: v0.2.0 full Chinese documentation; v0.1.0 first public release.)
 
 This repository follows its own workflow where it applies: its CI runs the kit's test suites on every push and PR, and PRs use the kit's conventions (`Refs #`, risk self-assessment, evidence).
 

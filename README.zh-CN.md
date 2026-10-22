@@ -19,22 +19,27 @@
 - **机器负责执行，文档负责解释。** 凡是机器能判定的，都落成 lint 规则或 CI 门禁。关键规则必须是 `error`，绝不用 `warn`——一个让 CI 照样变绿的警告不算规则。
 - **一切都要归档。** 隐藏验收场景、审查教训和覆盖状态在每次合并后都写回用例库，让每个错误只付一次学费。
 
-完整设计文档：[docs/blueprint.md](docs/blueprint.md)（目前为中文版；英文翻译在路线图上）。
+完整设计文档：[中文](docs/blueprint.md) / [English](docs/blueprint.en.md)。
 
 ## 工具包包含什么
 
 ```text
-docs/blueprint.md   The full design: 12 core mechanisms, 5 adoption phases,
-                    per-stack adaptation tables, project "slots", anti-patterns
+docs/blueprint*.md  The full design (Chinese + English editions): 12 core
+                    mechanisms, 5 adoption phases, per-stack adaptation
+                    tables, project "slots", anti-patterns
 templates/          Blank templates for all 11 workflow documents — AGENTS.md,
                     REVIEW.md, review protocol, TDD spec, contract checklist,
                     coding standards, project-management set, platform playbook,
                     review ledger, and the test-case library (TEMPLATE + INDEX)
-scripts/            The TDD compliance gate (zero-dependency Python): production
-                    changes must ship with paired tests containing negative
-                    assertions. Configurable per stack; ships with its own tests
-examples/           A complete worked example: "join by invite code" through all
-                    eight steps, with runnable code and real red/green evidence
+                    — plus lint-starters/ with per-stack lint configs
+scripts/            The one-command installer (install.py: scaffolds the whole
+                    kit into your repository, never overwrites existing files)
+                    and the TDD compliance gate (zero-dependency Python):
+                    production changes must ship with paired tests containing
+                    negative assertions. Both ship with their own tests
+examples/           Three worked examples: "join by invite code" (the full
+                    pipeline, runnable code, real red/green evidence), a
+                    Delta-mode second platform, and a hotfix lane
 ```
 
 如果你想在读理论之前先看这套工作流的实际产物，从[完整示例](examples/invite-code/)开始。
@@ -44,12 +49,12 @@ examples/           A complete worked example: "join by invite code" through all
 **动手路径**：照着 [Quickstart](docs/quickstart.md)（[简体中文](docs/quickstart.zh-CN.md)）走——一份 30 分钟的上手引导：拷模板、填八个槽位、接上门禁、跑通你的第一个功能。概念路径：
 
 1. 读[蓝图](docs/blueprint.md)——它定义了 12 个核心机制、五个落地阶段和各技术栈的适配表。
-2. 把[模板](templates/)复制到你的仓库（模板目录的 README 写了每个文件的目标位置），并填好八个项目「槽位」（数据隔离维度、项目不变量、failure 定义、高风险路径、★ 决策、强制失败分支、设计源、风险分级）。
+2. 把脚手架铺进你的仓库——在仓库根目录运行[安装脚本](scripts/)（或手动复制[模板](templates/)，模板目录的 README 写了每个文件的目标位置），并填好八个项目「槽位」（数据隔离维度、项目不变量、failure 定义、高风险路径、★ 决策、强制失败分支、设计源、风险分级）。
 3. 把[门禁脚本](scripts/)接进 CI，然后先拿一个小而真实的功能完整跑一遍流程，再扩大使用。
 
 ## 状态
 
-**v0.2.0**——全套中文文档：本工具包的每一份文档现都有简体中文版，与英文原版并排存放。（v0.1.0 为第一个公开发布版：蓝图、完整模板集、门禁脚本和一个完整的走通示例都已就位。）路线图上还有：蓝图的英文版、更多示例（Delta 模式的第二平台、hotfix 流程）、各技术栈的 lint 起步配置。
+**v0.3.0**——路线图完结：蓝图中英双语，Delta 模式与 hotfix 两个走通示例与邀请码示例会合，各技术栈 lint 起步包就位，一键安装脚本可把整套脚手架铺进你的仓库。（此前：v0.2.0 全套中文文档；v0.1.0 第一个公开发布版。）
 
 本仓库在适用处遵循自己的工作流：它的 CI 在每次推送和每个 PR 时运行工具包的测试套件，PR 也使用工具包的约定（`Refs #`、风险自评、证据）。
 
