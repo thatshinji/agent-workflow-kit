@@ -17,10 +17,10 @@
 在**你的**仓库根目录运行：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/thatshinji/agent-workflow-kit/v0.3.2/scripts/install.py | python3 -
+curl -fsSL https://raw.githubusercontent.com/thatshinji/agent-workflow-kit/v0.3.3/scripts/install.py | python3 -
 ```
 
-脚本会把 kit（v0.3.2 版）下载到临时目录，再把全部模板（对照表如下）、门禁脚本和它的配置一键铺进你的仓库。已存在的文件绝不覆盖——冲突项跳过并报告（`--force` 才覆盖）。只想预览计划就在 `python3 -` 后加 `--dry-run`；要中文模板加 `--lang zh-CN`（落地时用无后缀名，你的仓库保持单语）；要某个技术栈的 lint 起步配置加 `--stack go`（或 `web` / `swift` / `python`）；想装其他版本用 `--kit-version <标签>`，装最新版用 `--kit-version latest`。
+脚本会把 kit 下载到临时目录，再把全部模板（对照表如下）、门禁脚本和它的配置一键铺进你的仓库——装的总是最新发布版。已存在的文件绝不覆盖——冲突项跳过并报告（`--force` 才覆盖）。只想预览计划就在 `python3 -` 后加 `--dry-run`；要中文模板加 `--lang zh-CN`（落地时用无后缀名，你的仓库保持单语）；要某个技术栈的 lint 起步配置加 `--stack go`（或 `web` / `swift` / `python`）；只有想装某个指定的旧版本时，才需要 `--kit-version <标签>`。
 
 不想管道执行远程脚本？把本仓库 clone 下来，运行 `python3 /path/to/agent-workflow-kit/scripts/install.py`，效果相同。手动拷贝也可以，对照表就是这张：
 
