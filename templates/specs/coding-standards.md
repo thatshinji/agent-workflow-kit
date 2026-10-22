@@ -1,3 +1,5 @@
+English | [简体中文](coding-standards.zh-CN.md)
+
 <!--
   TEMPLATE: docs/specs/coding-standards.md
   Two layers: (1) machine enforcement — tools, config files, CI ownership;
