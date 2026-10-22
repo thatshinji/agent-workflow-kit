@@ -1,0 +1,30 @@
+"""Invite-code join — STUB (pipeline step 4 state).
+
+The reviewer has frozen the tests; the writer has not implemented anything
+yet. Running the tests against this stub produces the RED evidence recorded
+in ../03-red-evidence.md. The finished implementation replaces this file in
+step 5 (see the git history of the real kit repository for the walkthrough's
+own evolution — in this example pack, invite.py ships in its final form and
+this stub is preserved as invite_stub.py.txt for reference).
+"""
+
+
+class InviteError(Exception):
+    def __init__(self, code, message):
+        super().__init__(message)
+        self.code = code
+        self.message = message
+
+
+class InviteService:
+    def __init__(self, clock):
+        self._clock = clock
+
+    def create_code(self, workspace_id, code, ttl_seconds, max_uses):
+        raise NotImplementedError
+
+    def join(self, user_id, raw_code):
+        raise NotImplementedError
+
+    def is_member(self, workspace_id, user_id):
+        raise NotImplementedError
