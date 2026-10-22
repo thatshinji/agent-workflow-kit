@@ -5,7 +5,9 @@ Run:  python3 -m unittest test_install -v     (from scripts/)
 Covers: fresh install lands everything byte-identical to the kit sources,
 re-running skips everything, --lang zh-CN picks the Chinese sources under
 plain target names, --dry-run writes nothing, --force overwrites local
-edits, --stack installs the lint starter, missing sources exit 2.
+edits, --stack installs the lint starter, missing sources exit 2, and
+bootstrap mode (no local kit: the download function is substituted with
+a fake, so these tests never touch the network).
 """
 
 import io
@@ -22,6 +24,15 @@ import install as installer
 
 REAL_KIT_ROOT = installer.KIT_ROOT
 PLAN = installer.build_plan("en", [])
+
+
+def make_fake_kit_root(dest):
+    """A minimal stand-in kit root under dest: the real templates/ and
+    scripts/ trees, copied. Used as the bootstrap download's result."""
+    root = Path(dest) / "agent-workflow-kit-fake"
+    shutil.copytree(REAL_KIT_ROOT / "templates", root / "templates")
+    shutil.copytree(REAL_KIT_ROOT / "scripts", root / "scripts")
+    return root
 
 
 def run_install(argv):
@@ -158,6 +169,83 @@ class TestMissingSource(InstallTestCase):
             installer.KIT_ROOT = old_root
         self.assertEqual(code, 2)
         self.assertIn("templates/AGENTS.md", err)
+
+
+class TestBootstrap(InstallTestCase):
+    """Bootstrap mode: no local kit (KIT_ROOT is None, as when the script
+    is piped over stdin via curl). fetch_kit is substituted with a fake
+    that builds a kit root inside the temp dir main hands it — no network.
+    """
+
+    def setUp(self):
+        super().setUp()
+        self.fetch_versions = []
+        self._real_fetch = installer.fetch_kit
+        self._real_root = installer.KIT_ROOT
+
+        def fake_fetch(version, dest):
+            self.fetch_versions.append(version)
+            return make_fake_kit_root(dest)
+
+        installer.fetch_kit = fake_fetch
+        installer.KIT_ROOT = None
+        self.addCleanup(self._restore_bootstrap)
+
+    def _restore_bootstrap(self):
+        installer.fetch_kit = self._real_fetch
+        installer.KIT_ROOT = self._real_root
+
+    def test_bootstrap_installs_when_local_kit_missing(self):
+        code, _out, _err = self.install()
+        self.assertEqual(code, 0)
+        self.assertEqual(len(self.fetch_versions), 1)
+        for _src_rel, dst_rel in PLAN:
+            landed = self.target / dst_rel
+            self.assertTrue(landed.is_file(), f"missing: {dst_rel}")
+        agents = self.target / "AGENTS.md"
+        source = REAL_KIT_ROOT / "templates/AGENTS.md"
+        self.assertEqual(agents.read_bytes(), source.read_bytes())
+
+    def test_default_version_is_the_pinned_constant(self):
+        code, _out, _err = self.install()
+        self.assertEqual(code, 0)
+        self.assertEqual(self.fetch_versions, [installer.KIT_VERSION])
+
+    def test_kit_version_flag_is_passed_through(self):
+        code, _out, _err = self.install("--kit-version", "v9.9.9-test")
+        self.assertEqual(code, 0)
+        self.assertEqual(self.fetch_versions, ["v9.9.9-test"])
+
+    def test_bootstrap_dry_run_writes_nothing(self):
+        code, out, _err = self.install("--dry-run")
+        self.assertEqual(code, 0)
+        self.assertEqual(len(self.fetch_versions), 1)
+        files = [p for p in self.target.rglob("*") if p.is_file()]
+        self.assertEqual(files, [])
+        self.assertIn(f"Planned ({len(PLAN)}):", out)
+
+    def test_bootstrap_failure_exits_2_with_hint(self):
+        def failing_fetch(version, dest):
+            raise installer.BootstrapError("simulated network failure")
+
+        installer.fetch_kit = failing_fetch
+        code, _out, err = self.install()
+        self.assertEqual(code, 2)
+        self.assertIn("simulated network failure", err)
+        self.assertIn("clone https://github.com/", err)
+
+
+class TestBootstrapUrls(unittest.TestCase):
+    def test_archive_url_construction(self):
+        self.assertEqual(
+            installer.kit_archive_url("v1.2.3"),
+            "https://github.com/thatshinji/agent-workflow-kit"
+            "/archive/refs/tags/v1.2.3.zip",
+        )
+
+    def test_repo_and_version_constants(self):
+        self.assertEqual(installer.KIT_REPO, "thatshinji/agent-workflow-kit")
+        self.assertTrue(installer.KIT_VERSION.startswith("v"))
 
 
 if __name__ == "__main__":

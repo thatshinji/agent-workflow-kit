@@ -12,6 +12,17 @@ command instead of a dozen manual copies:
 The kit root is derived from this script's location (scripts/ lives one
 level below it), so the installer works from any working directory.
 
+No local clone? This script can bootstrap itself: when it cannot find a
+kit next to itself (for example when piped in over stdin), it downloads
+the kit source archive from GitHub into a temp directory, installs from
+there, and cleans up. Adoption becomes a single line:
+
+    curl -fsSL https://raw.githubusercontent.com/thatshinji/agent-workflow-kit/v0.3.2/scripts/install.py | python3 - [--lang zh-CN]
+
+Bootstrap downloads the release named by --kit-version (default v0.3.2;
+"latest" resolves the newest release through the GitHub API). The flag
+is ignored when a local kit is found next to the script.
+
 What lands where (target side):
 
     AGENTS.md, REVIEW.md                      repository root
@@ -31,6 +42,10 @@ Options:
                  templates/lint-starters/ at the target root. Repeatable:
                  go -> .golangci.yml, web -> eslint.config.mjs,
                  swift -> .swiftlint.yml, python -> ruff.toml.
+  --kit-version  Bootstrap mode only: which kit release to download
+                 (a tag such as v0.3.2, or "latest" for the newest
+                 release). Ignored when the script runs from a local
+                 clone, where the files next to it are the source.
 
 Safety:
 
@@ -41,17 +56,49 @@ Safety:
     stderr, not a stop — the files are just as useful in a plain folder.
 
 Exit codes: 0 = done (any mix of installed / skipped / planned),
-2 = a kit source file is missing (each one is named) or a usage error.
+2 = a kit source file is missing (each one is named), the bootstrap
+download failed, or a usage error.
 """
 
 from __future__ import annotations
 
 import argparse
+import json
 import shutil
 import sys
+import tempfile
+import urllib.request
+import zipfile
 from pathlib import Path
 
-KIT_ROOT = Path(__file__).resolve().parent.parent
+KIT_REPO = "thatshinji/agent-workflow-kit"
+KIT_VERSION = "v0.3.2"
+
+ARCHIVE_URL_TEMPLATE = "https://github.com/{repo}/archive/refs/tags/{tag}.zip"
+LATEST_RELEASE_API = "https://api.github.com/repos/{repo}/releases/latest"
+USER_AGENT = "agent-workflow-kit-installer"
+
+
+def _local_kit_root() -> Path | None:
+    """The kit root next to this script, or None when there is none.
+
+    Running from a clone, this file lives at <kit>/scripts/install.py and
+    the kit root is its grandparent — valid only if templates/ is really
+    there. Piped over stdin (curl | python3 -), __file__ is undefined and
+    there is no local kit at all; a copy of the script on its own (no
+    templates/ next to it) is in the same position.
+    """
+    try:
+        script = Path(__file__).resolve()
+    except NameError:
+        return None
+    root = script.parent.parent
+    return root if (root / "templates").is_dir() else None
+
+
+# The local kit root when this script runs from a clone; None means
+# bootstrap mode (see fetch_kit). Tests may substitute either value.
+KIT_ROOT: Path | None = _local_kit_root()
 
 # (source relative to the kit root, destination relative to the target repo).
 # Template sources are language-selected by localized_source(); the target
@@ -90,6 +137,69 @@ NEXT_STEPS = [
 ]
 
 
+class BootstrapError(Exception):
+    """The kit source could not be downloaded or unpacked."""
+
+
+def kit_archive_url(tag: str) -> str:
+    """The source-archive URL for one kit release tag."""
+    return ARCHIVE_URL_TEMPLATE.format(repo=KIT_REPO, tag=tag)
+
+
+def _download(url: str, dest: Path) -> None:
+    request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+    with urllib.request.urlopen(request) as response, dest.open("wb") as fh:
+        shutil.copyfileobj(response, fh)
+
+
+def _latest_tag() -> str:
+    """Resolve "latest" to a release tag via the GitHub API."""
+    url = LATEST_RELEASE_API.format(repo=KIT_REPO)
+    request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+    try:
+        with urllib.request.urlopen(request) as response:
+            data = json.load(response)
+    except (OSError, ValueError) as exc:
+        raise BootstrapError(
+            f"could not look up the latest kit release at {url}: {exc}"
+        ) from exc
+    tag = data.get("tag_name") if isinstance(data, dict) else None
+    if not tag:
+        raise BootstrapError(f"no tag_name in the GitHub response from {url}")
+    return tag
+
+
+def fetch_kit(version: str, dest: Path) -> Path:
+    """Download the kit source for `version` into dest; return its root.
+
+    `version` is a release tag (e.g. "v0.3.2") or "latest". Raises
+    BootstrapError on any network or archive failure. Kept small and
+    module-level so tests can substitute it and never touch the network.
+    """
+    try:
+        tag = _latest_tag() if version == "latest" else version
+        url = kit_archive_url(tag)
+        archive = dest / "kit.zip"
+        _download(url, archive)
+        unpacked = dest / "unpacked"
+        with zipfile.ZipFile(archive) as zf:
+            zf.extractall(unpacked)
+    except BootstrapError:
+        raise
+    except (OSError, zipfile.BadZipFile) as exc:
+        raise BootstrapError(
+            f"could not download or unpack the kit source "
+            f"(version {version!r}): {exc}"
+        ) from exc
+    roots = [p for p in unpacked.iterdir() if p.is_dir()]
+    if len(roots) != 1 or not (roots[0] / "templates").is_dir():
+        raise BootstrapError(
+            f"the archive for version {version!r} does not look like "
+            "the kit source (no single root with templates/)"
+        )
+    return roots[0]
+
+
 def localized_source(source_rel: str, lang: str) -> str:
     """Map a template source to its --lang edition.
 
@@ -113,7 +223,8 @@ def build_plan(lang: str, stacks: list[str]) -> list[tuple[str, str]]:
 
 
 def run_plan(
-    plan: list[tuple[str, str]], target: Path, dry_run: bool, force: bool
+    plan: list[tuple[str, str]], kit_root: Path, target: Path,
+    dry_run: bool, force: bool
 ) -> tuple[list[str], list[str], list[str]]:
     """Execute (or, for dry runs, rehearse) the plan.
 
@@ -125,7 +236,7 @@ def run_plan(
     skipped: list[str] = []
     planned: list[str] = []
     for src_rel, dst_rel in plan:
-        src = KIT_ROOT / src_rel
+        src = kit_root / src_rel
         dst = target / dst_rel
         exists = dst.exists()
         if exists and not force:
@@ -194,27 +305,66 @@ def main(argv: list[str] | None = None) -> int:
         "--force", action="store_true",
         help="overwrite existing target files (each overwrite is reported)",
     )
+    parser.add_argument(
+        "--kit-version", default=KIT_VERSION, metavar="TAG",
+        help="bootstrap mode only: kit release to download (a tag such "
+        f"as {KIT_VERSION}, or 'latest'); ignored when a local kit is "
+        f"found next to this script (default: {KIT_VERSION})",
+    )
     args = parser.parse_args(argv)
 
     target = Path(args.target)
     stacks = list(dict.fromkeys(args.stack))  # dedupe, keep order
     plan = build_plan(args.lang, stacks)
 
-    missing = [src for src, _ in plan if not (KIT_ROOT / src).is_file()]
-    if missing:
-        for src in missing:
-            print(f"error: kit source file missing: {src}", file=sys.stderr)
-        return 2
-
-    if not (target / ".git").exists():
+    kit_root = KIT_ROOT
+    tmp_dir: Path | None = None
+    if kit_root is None:
+        # Bootstrap mode: no kit next to this script (e.g. it was piped
+        # in over stdin). Download the source into a temp directory and
+        # install from there; the finally clause below removes it.
+        tmp_dir = Path(tempfile.mkdtemp(prefix="agent-workflow-kit-"))
         print(
-            f"warning: {target} is not a git repository; installing anyway",
+            "note: no local kit found; downloading the kit source "
+            f"({args.kit_version}) from github.com",
             file=sys.stderr,
         )
+        try:
+            kit_root = fetch_kit(args.kit_version, tmp_dir)
+        except BootstrapError as exc:
+            print(f"error: bootstrap failed: {exc}", file=sys.stderr)
+            print(
+                "hint: bootstrap mode needs network access to github.com; "
+                f"alternatively, clone https://github.com/{KIT_REPO} and "
+                "run scripts/install.py from the clone instead.",
+                file=sys.stderr,
+            )
+            shutil.rmtree(tmp_dir, ignore_errors=True)
+            return 2
+    try:
+        missing = [src for src, _ in plan if not (kit_root / src).is_file()]
+        if missing:
+            for src in missing:
+                print(
+                    f"error: kit source file missing: {src}", file=sys.stderr
+                )
+            return 2
 
-    installed, skipped, planned = run_plan(plan, target, args.dry_run, args.force)
-    print_summary(installed, skipped, planned)
-    return 0
+        if not (target / ".git").exists():
+            print(
+                f"warning: {target} is not a git repository; "
+                "installing anyway",
+                file=sys.stderr,
+            )
+
+        installed, skipped, planned = run_plan(
+            plan, kit_root, target, args.dry_run, args.force
+        )
+        print_summary(installed, skipped, planned)
+        return 0
+    finally:
+        if tmp_dir is not None:
+            shutil.rmtree(tmp_dir, ignore_errors=True)
 
 
 if __name__ == "__main__":
