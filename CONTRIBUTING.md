@@ -1,3 +1,5 @@
+English | [简体中文](CONTRIBUTING.zh-CN.md)
+
 # Contributing to agent-workflow-kit
 
 Thanks for your interest. This project is a workflow kit, so most contributions are documents, templates, and small gate scripts — all are welcome.

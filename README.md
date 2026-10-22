@@ -1,3 +1,5 @@
+English | [简体中文](README.zh-CN.md)
+
 # agent-workflow-kit
 
 > A spec-first, test-first development workflow for solo builders and small teams who ship software with multiple AI coding agents.
