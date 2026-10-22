@@ -1,0 +1,16 @@
+# Ruff starter config.
+# Copy to your project root as ruff.toml (or merge into pyproject.toml).
+# Ruff has no "only new lines" mode — CI runs it on the files a PR
+# changes. See ../README.md for the command.
+
+line-length = 100
+
+[lint]
+# A compact bug-and-hygiene selection, not formatting opinions
+# (formatting is `ruff format`'s job):
+#   E  — pycodestyle errors
+#   F  — pyflakes: unused imports, undefined names
+#   I  — import sorting
+#   UP — pyupgrade: use modern syntax for the target Python
+#   B  — bugbear: patterns that are probably bugs
+select = ["E", "F", "I", "UP", "B"]
