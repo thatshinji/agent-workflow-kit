@@ -6,7 +6,13 @@
 
 ## install.py
 
-一键安装脚本。在**你自己的**仓库根目录运行它，把模板、门禁脚本及其配置一键铺到位：
+一键安装脚本。在**你自己的**仓库根目录运行它，把模板、门禁脚本及其配置一键铺到位。甚至不必先 clone kit——脚本会自举（钉死在 v0.3.2；`--kit-version <标签>` 或 `--kit-version latest` 可换版本；它会把 kit 下载到临时目录再从那里安装）：
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/thatshinji/agent-workflow-kit/v0.3.2/scripts/install.py | python3 -
+```
+
+或者在已经 clone 好 kit 的情况下：
 
 ```bash
 python3 /path/to/agent-workflow-kit/scripts/install.py                    # 英文模板

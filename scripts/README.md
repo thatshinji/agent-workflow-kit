@@ -6,7 +6,13 @@ Stack-agnostic gate scripts for the workflow. Everything here is zero-dependency
 
 ## install.py
 
-The one-command installer. Run it from the root of **your** repository to scaffold the templates, the gate script, and its config into place:
+The one-command installer. Run it from the root of **your** repository to scaffold the templates, the gate script, and its config into place. You do not even need the kit cloned — the script bootstraps itself (pinned at v0.3.2; `--kit-version <tag>` or `--kit-version latest` selects another version; it downloads the kit into a temp directory and installs from there):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/thatshinji/agent-workflow-kit/v0.3.2/scripts/install.py | python3 -
+```
+
+Or, with the kit already cloned:
 
 ```bash
 python3 /path/to/agent-workflow-kit/scripts/install.py                    # English templates
