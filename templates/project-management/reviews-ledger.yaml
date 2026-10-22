@@ -1,0 +1,20 @@
+# Review ledger — one entry per adjudicated finding.
+# Rules:
+#   - IDs are R-YYYYMMDD-NNN, sequential per day, never reused.
+#   - An adjudicated finding is never re-raised in later reviews (REVIEW.md skip paths).
+#   - verdict is exactly one of: TRUE | FALSE | UNKNOWN (see review-protocol.md §3).
+#   - When a class of finding reaches its second TRUE, open an issue to turn it
+#     into a machine check or regression test, and link it in `follow_up`.
+findings:
+  # - id: R-20260101-001
+  #   date: 2026-01-01
+  #   pr: 123
+  #   severity: Important        # Important | Nit | Pre-existing
+  #   class: authz-missing       # short problem class
+  #   location: path/to/file.ts:42
+  #   verdict: TRUE
+  #   summary: "One sentence, plain language: what was wrong."
+  #   evidence: "repro command / spec_ref + expected vs actual"
+  #   fix_commit: abc1234        # when verdict is TRUE and fixed
+  #   follow_up: null            # issue link when converted into a machine check
+  []
