@@ -19,8 +19,12 @@ agent-workflow-kit 各文档的空白模板。每份模板只包含结构、填�
 | [`project-management/tdd-workflow-spec.md`](project-management/tdd-workflow-spec.md) | [`project-management/tdd-workflow-spec.zh-CN.md`](project-management/tdd-workflow-spec.zh-CN.md) | `docs/project-management/tdd-workflow-spec.md` | 四步 TDD 循环与合规门禁的设计 |
 | [`project-management/contract-checklist.md`](project-management/contract-checklist.md) | [`project-management/contract-checklist.zh-CN.md`](project-management/contract-checklist.zh-CN.md) | `docs/project-management/contract-checklist.md` | 八部分组成的契约起草清单，含 ★ 产品决策 |
 | [`project-management/platform-playbook.md`](project-management/platform-playbook.md) | [`project-management/platform-playbook.zh-CN.md`](project-management/platform-playbook.zh-CN.md) | `docs/project-management/<platform>-playbook.md` | 按平台的 Delta 模式手册；每个平台一份 |
-| [`project-management/reviews-ledger.yaml`](project-management/reviews-ledger.yaml) | [`project-management/reviews-ledger.zh-CN.yaml`](project-management/reviews-ledger.zh-CN.yaml) | `docs/project-management/reviews/ledger.yaml` | 已裁决 finding 的台账；已裁决的 finding 不得重复提出 |
-| [`specs/coding-standards.md`](specs/coding-standards.md) | [`specs/coding-standards.zh-CN.md`](specs/coding-standards.zh-CN.md) | `docs/specs/coding-standards.md` | 活基线：机器强制矩阵 + 判断类约定 |
+| [`project-management/reviews-ledger.yaml`](project-management/reviews-ledger.yaml) | [`project-management/reviews-ledger.zh-CN.yaml`](project-management/reviews-ledger.zh-CN.yaml) | `docs/project-management/reviews-ledger.yaml` | 已裁决 finding 的台账；已裁决的 finding 不得重复提出 |
+| [`specs/coding-standards.md`](specs/coding-standards.md) | [`specs/coding-standards.zh-CN.md`](specs/coding-standards.zh-CN.md) | `docs/tech-specs/coding-standards.md` | 活基线：机器强制矩阵 + 判断类约定 |
+
+## lint 起步包
+
+[lint-starters/](lint-starters/) 里是各技术栈的起步配置（Go、Web/TypeScript、Swift、Python），落实编码规范的三项决策——只拦新增与改动行、关键规则 error 级、工具版本在 CI 里钉死。`scripts/install.py --stack <名称>` 可把对应配置直接铺到你的仓库根目录。
 
 ## 新项目的填写顺序
 
@@ -28,6 +32,4 @@ agent-workflow-kit 各文档的空白模板。每份模板只包含结构、填�
 2. 然后实例化 `AGENTS.md` 和 `REVIEW.md`——它们引用了大多数其他文档。
 3. 在第一个功能开工前，先建好 `docs/test-cases/` 并放入 `TEMPLATE.md` 与 `INDEX.md`；第一个功能的用例文件在它的流程第 2 步中写成。
 
-## 接下来
 
-路线图第 3 步：`scripts/` 下与技术栈无关的门禁脚本（TDD 合规检查器等），之后是 `examples/` 下的完整示例。

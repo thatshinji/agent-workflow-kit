@@ -17,8 +17,12 @@ Blank templates for the agent-workflow-kit documents. Each template contains str
 | `project-management/tdd-workflow-spec.md` | `docs/project-management/tdd-workflow-spec.md` | The four-step TDD loop and the compliance-gate design |
 | `project-management/contract-checklist.md` | `docs/project-management/contract-checklist.md` | The eight-part contract drafting checklist with ★ product decisions |
 | `project-management/platform-playbook.md` | `docs/project-management/<platform>-playbook.md` | Per-platform Delta-mode playbook; one copy per platform |
-| `project-management/reviews-ledger.yaml` | `docs/project-management/reviews/ledger.yaml` | Adjudicated-finding ledger; never re-raise a decided finding |
-| `specs/coding-standards.md` | `docs/specs/coding-standards.md` | Living baseline: machine-enforcement matrix + judgment conventions |
+| `project-management/reviews-ledger.yaml` | `docs/project-management/reviews-ledger.yaml` | Adjudicated-finding ledger; never re-raise a decided finding |
+| `specs/coding-standards.md` | `docs/tech-specs/coding-standards.md` | Living baseline: machine-enforcement matrix + judgment conventions |
+
+## Lint starters
+
+[lint-starters/](lint-starters/) holds per-stack starter configs (Go, Web/TypeScript, Swift, Python) that implement the coding-standards decisions — new and changed lines only, key rules at error level, tool versions pinned in CI. `scripts/install.py --stack <name>` drops one into your repository root.
 
 ## Filling order for a new project
 
@@ -26,6 +30,4 @@ Blank templates for the agent-workflow-kit documents. Each template contains str
 2. Then instantiate `AGENTS.md` and `REVIEW.md` — they reference most other documents.
 3. Create `docs/test-cases/` with `TEMPLATE.md` and `INDEX.md` before the first feature starts; the first feature's case file is written during its pipeline step 2.
 
-## Coming next
 
-Step 3 of the roadmap: stack-agnostic gate scripts (the TDD compliance checker and friends) under `scripts/`, followed by a worked example under `examples/`.
