@@ -1,3 +1,5 @@
+[English](blueprint.en.md) | 简体中文
+
 # 通用 AI 协作开发工作流复刻方案 v0.1
 
 > 提炼自一个真实在研项目的现行工作流（单人开发 + 多 AI agent 协作，App 与服务端并行推进，下称「参考项目」）：AGENTS.md（八步流程 + 铁律 + DoD）、REVIEW.md v1.4、TDD 协同规范 v1.0.0、后端契约草案清单、行为层测试用例归档体系（docs/test-cases/）、全栈编码规范、项目管理方案（docs/project-management/README.md）。
