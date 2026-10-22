@@ -3,6 +3,7 @@
 > A spec-first, test-first development workflow for solo builders and small teams who ship software with multiple AI coding agents.
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+![CI](https://github.com/thatshinji/agent-workflow-kit/actions/workflows/ci.yml/badge.svg)
 
 Most AI coding workflows fail in predictable ways: the agent writes tests that mirror its own implementation (so the tests prove nothing), reviewers raise findings with no reproducible evidence (so fixes thrash), and project conventions live in chat logs (so they are forgotten within a week). This kit is a complete, portable workflow distilled from a production project that runs on it daily. It is **stack-agnostic**: the mechanisms work the same for iOS, Android, Web, and servers in Go, Java, Node.js, Python, or anything else — only the tool mapping changes.
 
@@ -18,30 +19,39 @@ Most AI coding workflows fail in predictable ways: the agent writes tests that m
 
 Full design document: [docs/blueprint.md](docs/blueprint.md) (Chinese for now; English translation is on the roadmap).
 
-## Repository layout (roadmap)
+## What's in the kit
 
 ```text
-docs/        Design documents, starting with the workflow blueprint
-templates/   Blank templates for the 10 workflow documents (AGENTS.md, REVIEW.md, ...)
-scripts/     Stack-agnostic gate scripts (e.g. the TDD compliance checker)
-examples/    A tiny feature walked through all eight steps, end to end
+docs/blueprint.md   The full design: 12 core mechanisms, 5 adoption phases,
+                    per-stack adaptation tables, project "slots", anti-patterns
+templates/          Blank templates for all 11 workflow documents — AGENTS.md,
+                    REVIEW.md, review protocol, TDD spec, contract checklist,
+                    coding standards, project-management set, platform playbook,
+                    review ledger, and the test-case library (TEMPLATE + INDEX)
+scripts/            The TDD compliance gate (zero-dependency Python): production
+                    changes must ship with paired tests containing negative
+                    assertions. Configurable per stack; ships with its own tests
+examples/           A complete worked example: "join by invite code" through all
+                    eight steps, with runnable code and real red/green evidence
 ```
 
-Items land step by step; this README only lists what exists or is explicitly planned.
+Start with the [worked example](examples/invite-code/) if you want to see the workflow's artifacts before reading the theory.
 
 ## Getting started
 
 1. Read the [blueprint](docs/blueprint.md) — it defines the 12 core mechanisms, the five adoption phases, and the per-stack adaptation tables.
-2. Copy the templates (when they land) into your repository and fill in the eight project "slots" (data-isolation dimension, project invariants, failure definitions, high-risk paths, ★ decisions, mandatory failure branches, design source, risk grading).
-3. Wire the gates into CI, then run one small real feature through the full pipeline before scaling up.
+2. Copy the [templates](templates/) into your repository (the templates README maps each file to its destination) and fill in the eight project "slots" (data-isolation dimension, project invariants, failure definitions, high-risk paths, ★ decisions, mandatory failure branches, design source, risk grading).
+3. Wire the [gate script](scripts/) into CI, then run one small real feature through the full pipeline before scaling up.
 
 ## Status
 
-v0.1 under construction. Current step: repository foundation + blueprint. Templates and gate scripts follow the roadmap in the blueprint (§2, five phases).
+**v0.1.0** — first public release. Blueprint, full template set, gate script, and one complete worked example are in. On the roadmap: the blueprint in English, more examples (Delta-mode second platform, hotfix flow), and lint starter configs per stack.
+
+This repository follows its own workflow where it applies: its CI runs the kit's test suites on every push and PR, and PRs use the kit's conventions (`Refs #`, risk self-assessment, evidence).
 
 ## Contributing
 
-Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md). The project follows its own workflow for non-trivial changes: open an issue describing intent and non-goals first.
+Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md). For non-trivial changes, open an issue describing intent and non-goals first; that is the workflow the kit teaches.
 
 ## License
 
