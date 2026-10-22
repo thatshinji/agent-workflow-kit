@@ -1,3 +1,5 @@
+English | [简体中文](AGENTS.zh-CN.md)
+
 <!--
   TEMPLATE: AGENTS.md — copy to your repository root and fill in every <slot>.
   This file is the constitution of the workflow: every AI agent reads it before

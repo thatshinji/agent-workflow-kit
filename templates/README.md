@@ -1,3 +1,5 @@
+English | [简体中文](README.zh-CN.md)
+
 # Templates
 
 Blank templates for the agent-workflow-kit documents. Each template contains structure, filling guidance (in HTML comments at the top), and `<slot>` placeholders — never content filled in for a specific project.

@@ -1,3 +1,5 @@
+English | [简体中文](REVIEW.zh-CN.md)
+
 <!--
   TEMPLATE: REVIEW.md — copy to your repository root and fill in every <slot>.
   This file tells every reviewer (human or AI) what counts as a failure here,
