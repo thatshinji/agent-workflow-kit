@@ -1,0 +1,18 @@
+# SwiftLint starter config.
+# Copy to your app root as .swiftlint.yml.
+# Start from SwiftLint's default rule set and tune rule by rule against
+# real false positives — never bulk-import a giant shared config.
+
+# Placeholder: point this at your app's source directory.
+included:
+  - Sources
+
+opt_in_rules:
+  # Force-unwrapping optionals/external data is the classic crash
+  # source, and the coding standards ban it — so this one opt-in rule
+  # is on from day one instead of after the first crash report.
+  - force_unwrapping
+
+# Style preference, not a correctness rule: warn only, never block.
+line_length:
+  warning: 120
