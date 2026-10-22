@@ -18,7 +18,7 @@ jobs:
           python-version: "3.12"
       - name: Gate script tests
         working-directory: scripts
-        run: python3 -m unittest test_check_tdd_compliance -v
+        run: python3 -m unittest test_check_tdd_compliance test_install -v
       - name: Worked example tests
         working-directory: examples/invite-code/04-implementation
         run: python3 -m unittest test_invite -v
