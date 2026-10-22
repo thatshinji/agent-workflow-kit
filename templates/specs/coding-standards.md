@@ -36,7 +36,7 @@ Fill one row per stack in your project. Critical rules are `error` level — a `
 2. **Start from a base rule set**: <per stack, e.g. errcheck/staticcheck/ineffassign/unused equivalents>; style-heavy rule packs stay off until the base set runs clean. <Date>
 3. **Default rule sets first for new platforms**, tuned rule by rule against real false positives after the first batch of code lands. <Date>
 
-Tool versions are pinned everywhere. No `@latest` anywhere in CI: a CI result must depend only on the repository's content.
+Tool versions are exact everywhere — full version numbers, always. No `@latest` anywhere in CI: a CI result must depend only on the repository's content.
 
 ## 2. Per-language conventions
 
