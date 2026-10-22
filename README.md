@@ -71,7 +71,7 @@ Start with the [worked example](examples/invite-code/) if you want to see the wo
 
 ## Status
 
-**v0.3.0** — The roadmap is complete: the blueprint is bilingual (Chinese + English), Delta-mode and hotfix worked examples join the invite-code example, per-stack lint starter packs are in, and the one-command installer scaffolds the whole kit into your repository. (Earlier: v0.2.0 full Chinese documentation; v0.1.0 first public release.)
+**v0.3.1** — Current release. The roadmap is complete (see the v0.3.0 notes): bilingual blueprint and documentation, Delta-mode and hotfix worked examples, per-stack lint starter packs, and the one-command installer — and both READMEs now carry a Mermaid workflow diagram near the top. (Earlier: v0.2.0 full Chinese documentation; v0.1.0 first public release.)
 
 This repository follows its own workflow where it applies: its CI runs the kit's test suites on every push and PR, and PRs use the kit's conventions (`Refs #`, risk self-assessment, evidence).
 
