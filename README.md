@@ -21,6 +21,23 @@ Most AI coding workflows fail in predictable ways: the agent writes tests that m
 
 Full design document: [docs/blueprint.md](docs/blueprint.md) — bilingual: [中文](docs/blueprint.md) / [English](docs/blueprint.en.md).
 
+## The workflow at a glance
+
+```mermaid
+flowchart LR
+    A["Intent & contract<br/>★ decisions flagged for the decision-maker"] --> B["Behavior checklist<br/>written against the case library"]
+    B --> C{{"Approval gate<br/>decision-maker approves the checklist"}}
+    C --> D["Independent tests<br/>run red first, then frozen"]
+    D --> E["Implement<br/>TDD: red → green → refactor"]
+    E --> F["Review<br/>evidence-based findings"]
+    F --> G["Fix loop<br/>adjudication: TRUE / FALSE / UNKNOWN · ≤ 3 rounds"]
+    G --> H["Merge & archive<br/>cases, lessons, coverage written back"]
+    G -.->|fixes| E
+    H -.->|the library feeds the next checklist| B
+```
+
+Three roles throughout: the **decision-maker** (a human) approves and merges; the **Writer** drafts and implements; the **Reviewer** writes tests independently and reviews — no step is self-certified.
+
 ## What's in the kit
 
 ```text
