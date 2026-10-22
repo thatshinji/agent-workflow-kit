@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Gate script tests
+        working-directory: scripts
+        run: python3 -m unittest test_check_tdd_compliance -v
+      - name: Worked example tests
+        working-directory: examples/invite-code/04-implementation
+        run: python3 -m unittest test_invite -v
+      - name: TDD compliance gate (this repo, dogfooding)
+        if: github.event_name == 'pull_request'
+        run: python3 scripts/check_tdd_compliance.py --config tdd-check.config.json --base origin/${{ github.base_ref }}
