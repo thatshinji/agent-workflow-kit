@@ -4,6 +4,19 @@ English | [简体中文](README.zh-CN.md)
 
 Stack-agnostic gate scripts for the workflow. Everything here is zero-dependency and safe to copy into any repository.
 
+## install.py
+
+The one-command installer. Run it from the root of **your** repository to scaffold the templates, the gate script, and its config into place:
+
+```bash
+python3 /path/to/agent-workflow-kit/scripts/install.py                    # English templates
+python3 /path/to/agent-workflow-kit/scripts/install.py --lang zh-CN       # Chinese templates (installed under plain names)
+python3 /path/to/agent-workflow-kit/scripts/install.py --stack go --stack web   # also drop lint starter configs at the root
+python3 /path/to/agent-workflow-kit/scripts/install.py --dry-run          # print the plan, write nothing
+```
+
+Safety semantics: existing files are **skipped and reported, never silently overwritten** (`--force` overrides, and is also reported). All sources are checked before anything is written; a missing source aborts with exit code 2 and names the file. The closing summary prints what was installed, what was skipped, and the next three steps.
+
 ## check_tdd_compliance.py
 
 The TDD compliance gate from the TDD workflow spec (§4). It inspects the current change set (`git diff` against a base ref, plus staged, unstaged, and untracked files) and enforces:

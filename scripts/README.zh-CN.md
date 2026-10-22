@@ -4,6 +4,19 @@
 
 与技术栈无关的工作流门禁脚本。本目录中的一切均为零依赖，可以安全地复制到任何仓库。
 
+## install.py
+
+一键安装脚本。在**你自己的**仓库根目录运行它，把模板、门禁脚本及其配置一键铺到位：
+
+```bash
+python3 /path/to/agent-workflow-kit/scripts/install.py                    # 英文模板
+python3 /path/to/agent-workflow-kit/scripts/install.py --lang zh-CN       # 中文模板（落地时用无后缀名）
+python3 /path/to/agent-workflow-kit/scripts/install.py --stack go --stack web   # 同时把 lint 起步配置铺到根目录
+python3 /path/to/agent-workflow-kit/scripts/install.py --dry-run          # 只打印计划，不写任何文件
+```
+
+安全语义：已存在的文件一律**跳过并报告，绝不静默覆盖**（`--force` 才覆盖，同样逐项报告）。写入前先检查全部源文件；缺任何一个就以退出码 2 中止并点名缺失文件。结尾摘要会打印装了什么、跳过了什么，以及下一步三行。
+
 ## check_tdd_compliance.py
 
 出自 TDD 工作流规范（§4）的 TDD 合规门禁。它检查当前变更集（与基准 ref 的 `git diff`，外加已暂存、未暂存和未跟踪的文件），并强制执行：
