@@ -1,0 +1,21 @@
+# [English](reviews-ledger.yaml) | 简体中文
+# 审查台账——每条已裁决的 finding 一条记录。
+# 规则：
+#   - ID 格式为 R-YYYYMMDD-NNN，当日顺序编号，永不复用。
+#   - 已裁决的 finding 后续审查永不重提（见 REVIEW.md 的跳过路径）。
+#   - verdict 恰好为以下三者之一：TRUE | FALSE | UNKNOWN（见 review-protocol.md §3）。
+#   - 当某一类 finding 第二次被裁决为 TRUE 时，开一个 issue 把它变成
+#     机器检查或回归测试，并把链接填入 `follow_up`。
+findings:
+  # - id: R-20260101-001
+  #   date: 2026-01-01
+  #   pr: 123
+  #   severity: Important        # Important | Nit | Pre-existing
+  #   class: authz-missing       # 简短的问题类别
+  #   location: path/to/file.ts:42
+  #   verdict: TRUE
+  #   summary: "一句话、大白话：错在哪里。"
+  #   evidence: "复现命令 / spec_ref + 预期 vs 实际"
+  #   fix_commit: abc1234        # verdict 为 TRUE 且已修复时填写
+  #   follow_up: null            # 转化为机器检查后填 issue 链接
+  []
