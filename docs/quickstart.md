@@ -12,22 +12,17 @@ This guide takes a fresh repository from zero to "ready for its first feature un
 
 **Prerequisites**: a git repository (GitHub/GitLab/…), a human who will be the decision-maker, at least one AI coding agent (two roles are needed; two tools or two sessions both work), Python 3 if you want the gate script.
 
-## Step 0 — Get the kit (2 min)
+## Step 0 — Install in one command (1 min)
 
-Clone this repository next to yours, or download the latest release's source archive. Nothing gets installed into the kit itself; the next step scaffolds the files into your repository for you.
-
-## Step 1 — Scaffold your repository (1 min)
-
-Run the installer from the root of **your** repository:
+From the root of **your** repository:
 
 ```bash
-cd <your-repo>
-python3 /path/to/agent-workflow-kit/scripts/install.py
+curl -fsSL https://raw.githubusercontent.com/thatshinji/agent-workflow-kit/v0.3.2/scripts/install.py | python3 -
 ```
 
-It copies every template to its destination (table below), plus the gate script and its config. It never overwrites an existing file — conflicts are skipped and reported (`--force` overrides; `--dry-run` previews the plan). For the Chinese templates add `--lang zh-CN` (they land under plain names, so your repository stays monolingual). For a lint starter config for your stack add `--stack go` (or `web` / `swift` / `python`).
+The script downloads the kit (pinned at v0.3.2) into a temp directory and scaffolds everything into your repository: all templates (mapping below), the gate script, and its config. It never overwrites an existing file — conflicts are skipped and reported (`--force` overrides). To preview without writing, append `--dry-run` after `python3 -`. For the Chinese templates: `... | python3 - --lang zh-CN` (they land under plain names, so your repository stays monolingual). For a lint starter for your stack add `--stack go` (or `web` / `swift` / `python`). For another version: `--kit-version <tag>`, or `--kit-version latest`.
 
-Prefer to copy by hand? The mapping is:
+Prefer not to pipe a remote script? Clone this repository and run `python3 /path/to/agent-workflow-kit/scripts/install.py` — same result. Copying by hand also works; the mapping is:
 
 | From the kit | To your repo |
 |---|---|
@@ -39,7 +34,7 @@ Prefer to copy by hand? The mapping is:
 | `scripts/check_tdd_compliance.py` | `scripts/` |
 | `scripts/tdd-check.config.example.json` | `tdd-check.config.json` (root) |
 
-## Step 2 — Fill the eight slots (15 min – half a day)
+## Step 1 — Fill the eight slots (15 min – half a day)
 
 This is the only step that requires real thought; everything else is mechanics. Each slot below names where it lands:
 
@@ -52,18 +47,11 @@ This is the only step that requires real thought; everything else is mechanics. 
 7. **Design source** — where designs live and how code is checked against them 1:1 (a design-tool export + manifest, or at minimum a page list + screenshots). "One design source, no invented pages" is not optional.
 8. **Risk grading** — what Low/Medium/High mean in your project (it drives gate strictness) → `AGENTS.md` DoD / PR template.
 
-## Step 3 — Wire the gate (5 min)
+## Step 2 — Wire the gate (5 min)
 
-```bash
-cp scripts/check_tdd_compliance.py <your-repo>/scripts/
-cp scripts/tdd-check.config.example.json <your-repo>/tdd-check.config.json
-# edit the globs in tdd-check.config.json to match your layout
-# (the example contains ready-made Go / Web / Swift / Java areas)
-```
+The installer already placed `scripts/check_tdd_compliance.py` and `tdd-check.config.json` in your repository. Edit the globs in the config to match your layout (the example contains ready-made Go / Web / Swift / Java areas), then wire it into your one-command gate and CI per [scripts/README.md](../scripts/README.md). Run it once on an unchanged tree: it must print `PASS`.
 
-Add it to your one-command gate and CI per [scripts/README.md](../scripts/README.md). Run it once on an unchanged tree: it must print `PASS`.
-
-## Step 4 — Assign the roles (2 min)
+## Step 3 — Assign the roles (2 min)
 
 Write into your `AGENTS.md` who is who:
 
@@ -71,13 +59,13 @@ Write into your `AGENTS.md` who is who:
 - **Writer**: agent/tool A. Drafts intent, contracts, checklists; implements.
 - **Reviewer**: agent/tool B — a *different model* if you can; the same tool in a separate, context-free session if you can't. Writes tests independently; reviews with evidence.
 
-## Step 5 — Run the first feature (the real test)
+## Step 4 — Run the first feature (the real test)
 
 Pick the smallest feature that still crosses a real boundary (UI → API → data, or equivalent). Walk it through all eight steps from `AGENTS.md`, keeping [examples/invite-code/](../examples/invite-code/) open beside you — every artifact you must produce has a finished specimen there, including the red-test evidence and the reconciliation statement.
 
 Expect friction. That is the point of the trial run: afterwards, fix every annoyance **in the documents** (step 6 of the blueprint's adoption phases), not in your head.
 
-## Step 6 — After the first merge
+## Step 5 — After the first merge
 
 - The archive four actions happened (hidden scenarios unsealed, cases updated, lessons distilled, matrix row added) — if any was skipped, do it now and note why it was skippable.
 - Update your `docs/test-cases/INDEX.md`: your first real row exists. The library is alive.
@@ -91,7 +79,7 @@ If the full kit feels heavy for your current stage, start with five mechanisms �
 
 | Phase | Typical effort |
 |---|---|
-| Steps 0–4 (setup) | 30 minutes of mechanics + slot-filling (15 min – half a day) |
+| Steps 0–3 (setup) | 30 minutes of mechanics + slot-filling (15 min – half a day) |
 | First feature trial | Within the first week; budget the feature's normal time × 1.5 |
 | Payoff | From the second feature onward: fewer review rounds, no re-litigated decisions, tests that mean something |
 

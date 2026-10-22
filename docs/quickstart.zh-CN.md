@@ -12,22 +12,17 @@
 
 **前置条件**：一个 git 仓库（GitHub/GitLab 等）、一位担任决策者的人、至少一个 AI 编程 agent（需要两个角色，两个工具或两个会话都可以）、想用门禁脚本的话需要 Python 3。
 
-## 第 0 步 — 拿到 kit（2 分钟）
+## 第 0 步 — 一行命令装好（1 分钟）
 
-把本仓库 clone 到你的项目旁边，或下载最新 Release 的源码包。kit 本身不需要安装任何东西；下一步会把需要的文件一键铺进你的仓库。
-
-## 第 1 步 — 把脚手架铺进你的仓库（1 分钟）
-
-在**你的**仓库根目录运行安装脚本：
+在**你的**仓库根目录运行：
 
 ```bash
-cd <你的仓库>
-python3 /path/to/agent-workflow-kit/scripts/install.py
+curl -fsSL https://raw.githubusercontent.com/thatshinji/agent-workflow-kit/v0.3.2/scripts/install.py | python3 -
 ```
 
-它会把下面这张表里的模板全部拷到位，外加门禁脚本和它的配置。已存在的文件绝不覆盖——冲突项会跳过并报告（`--force` 才覆盖；`--dry-run` 只预览计划）。要中文模板就加 `--lang zh-CN`（落地时用无后缀名，你的仓库保持单语）；要某个技术栈的 lint 起步配置就加 `--stack go`（或 `web` / `swift` / `python`）。
+脚本会把 kit（钉死在 v0.3.2）下载到临时目录，再把全部模板（对照表如下）、门禁脚本和它的配置一键铺进你的仓库。已存在的文件绝不覆盖——冲突项跳过并报告（`--force` 才覆盖）。只想预览计划就在 `python3 -` 后加 `--dry-run`；要中文模板加 `--lang zh-CN`（落地时用无后缀名，你的仓库保持单语）；要某个技术栈的 lint 起步配置加 `--stack go`（或 `web` / `swift` / `python`）；想装其他版本用 `--kit-version <标签>`，装最新版用 `--kit-version latest`。
 
-想手动拷贝也可以，对照表就是这张：
+不想管道执行远程脚本？把本仓库 clone 下来，运行 `python3 /path/to/agent-workflow-kit/scripts/install.py`，效果相同。手动拷贝也可以，对照表就是这张：
 
 | kit 里的文件 | 你仓库里的位置 |
 |---|---|
@@ -39,7 +34,7 @@ python3 /path/to/agent-workflow-kit/scripts/install.py
 | `scripts/check_tdd_compliance.py` | `scripts/` |
 | `scripts/tdd-check.config.example.json` | `tdd-check.config.json`（根目录） |
 
-## 第 2 步 — 填 8 个槽位（15 分钟 – 半天）
+## 第 1 步 — 填 8 个槽位（15 分钟 – 半天）
 
 这是唯一需要真正动脑的一步，其余都是机械操作。每个槽位都标了落点：
 
@@ -52,18 +47,11 @@ python3 /path/to/agent-workflow-kit/scripts/install.py
 7. **设计源** — 设计稿从哪来、代码怎么与它 1:1 对账（设计工具导出包 + 清单，或至少页面清单 + 截图）。「唯一设计源、不凭空造页」这一条不能省。
 8. **风险分级口径** — Low/Medium/High 在你的项目里怎么划分（它决定各道门的严格程度）→ `AGENTS.md` 的 DoD / PR 模板。
 
-## 第 3 步 — 接门禁（5 分钟）
+## 第 2 步 — 接门禁（5 分钟）
 
-```bash
-cp scripts/check_tdd_compliance.py <你的仓库>/scripts/
-cp scripts/tdd-check.config.example.json <你的仓库>/tdd-check.config.json
-# 按你的目录结构修改 tdd-check.config.json 里的路径规则
-#（示例里有 Go / Web / Swift / Java 四种现成样例）
-```
+安装脚本已经把 `scripts/check_tdd_compliance.py` 和 `tdd-check.config.json` 放进你的仓库了。按你的目录结构修改配置里的路径规则（示例里有 Go / Web / Swift / Java 四种现成样例），再照 [scripts/README.md](../scripts/README.md) 把它挂进你的一键门禁和 CI。在未改动的代码树上先跑一次：必须输出 `PASS`。
 
-再照 [scripts/README.md](../scripts/README.md) 把它挂进你的一键门禁和 CI。在未改动的代码树上先跑一次：必须输出 `PASS`。
-
-## 第 4 步 — 定角色（2 分钟）
+## 第 3 步 — 定角色（2 分钟）
 
 把谁是谁写进你的 `AGENTS.md`：
 
@@ -71,13 +59,13 @@ cp scripts/tdd-check.config.example.json <你的仓库>/tdd-check.config.json
 - **Writer（写作者）**：agent/工具 A。起草意图、契约、清单；负责实现。
 - **Reviewer（审查者）**：agent/工具 B——尽量用**不同的模型**；实在没有，就用同一个工具开一个不带实现上下文的新会话。独立写测试、按证据制 review。
 
-## 第 5 步 — 跑第一个功能（真正的试炼）
+## 第 4 步 — 跑第一个功能（真正的试炼）
 
 挑一个最小但完整跨界的功能（比如 UI → API → 数据这一整条线），严格按 `AGENTS.md` 的八步走一遍，全程把 [examples/invite-code/](../examples/invite-code/) 打开放在旁边——你要产出的每样东西（意图段、行为清单、红灯证据、对账单、归档状态）在那里都有一份成品样本。
 
 别扭是必然的，这正是试跑的目的：跑完后把每个别扭**修进文档**（蓝图落地五阶段的最后一步），而不是记在脑子里。
 
-## 第 6 步 — 第一次合并之后
+## 第 5 步 — 第一次合并之后
 
 - 归档四项都做了吗（隐藏场景解封、用例更新、教训蒸馏、覆盖矩阵加行）——漏了就现在补，并记下为什么当时会被漏掉。
 - 更新你的 `docs/test-cases/INDEX.md`：第一行真实记录诞生，用例库活了。
@@ -91,7 +79,7 @@ cp scripts/tdd-check.config.example.json <你的仓库>/tdd-check.config.json
 
 | 阶段 | 典型耗时 |
 |---|---|
-| 第 0–4 步（搭建） | 机械操作约 30 分钟 + 填槽位 15 分钟 – 半天 |
+| 第 0–3 步（搭建） | 机械操作约 30 分钟 + 填槽位 15 分钟 – 半天 |
 | 第一个功能试跑 | 第一周内完成；按功能正常工时 × 1.5 预留 |
 | 开始回本 | 从第二个功能起：review 轮次变少、决策不再重复争论、测试开始真正算数 |
 
