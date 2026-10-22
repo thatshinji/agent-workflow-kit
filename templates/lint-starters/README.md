@@ -13,7 +13,7 @@ Why: a rule only exists if it can fail a build. If you turn on a linter against 
 Two companion rules, from the coding standards:
 
 - **Critical rules are `error` level.** Style preferences can warn; correctness rules never do.
-- **Tool versions are pinned in CI.** No `@latest`, no floating ranges for the linter itself: a CI result must depend only on the repository's content, never on what a tool released last night.
+- **Tool versions are exact in CI.** No `@latest`, no floating ranges for the linter itself: a CI result must depend only on the repository's content, never on what a tool released last night.
 
 ## Go — golangci-lint
 
@@ -46,7 +46,7 @@ Config: [`swift/.swiftlint.yml`](swift/.swiftlint.yml). Copy it to your app root
 - **What it is**: SwiftLint's default rule set, plus exactly one opt-in rule on day one: `force_unwrapping`. Force-unwrapping external or optional data is the classic crash source, and the coding standards ban it — so it is opted in from the start instead of waiting for the first crash report.
 - **Line length** warns at 120. It is a warning on purpose: line length is a style preference, not a correctness rule, and style preferences don't get to block merges.
 - **New code only**: SwiftLint lints whole files. If you want strict new-code-only enforcement, run it in CI on the files changed in the PR (same `git diff --name-only` trick as the web stack). Running it repo-wide is also acceptable here because the default set is conservative.
-- **Pin the version & tune slowly**: pin the SwiftLint version in CI (exact release, not a branch). Expect to tune: start from defaults, and when a rule produces a false positive, adjust that one rule with a comment saying why — never disable the tool, and never adopt a giant shared config wholesale.
+- **Use an exact version & tune slowly**: install an exact SwiftLint release in CI (not a branch). Expect to tune: start from defaults, and when a rule produces a false positive, adjust that one rule with a comment saying why — never disable the tool, and never adopt a giant shared config wholesale.
 
 ## Python — Ruff
 
