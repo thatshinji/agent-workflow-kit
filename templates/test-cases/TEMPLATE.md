@@ -1,3 +1,5 @@
+English | [简体中文](TEMPLATE.zh-CN.md)
+
 <!--
   TEMPLATE: one file per feature, stored in docs/test-cases/<domain>/<feature>.md
   This file is the living behavior contract of a feature. Implementation PRs

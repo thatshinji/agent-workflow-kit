@@ -1,3 +1,5 @@
+English | [简体中文](INDEX.zh-CN.md)
+
 <!--
   TEMPLATE: docs/test-cases/INDEX.md — the coverage ledger of the behavior
   test-case library. It records facts, not plans: a feature gets a row only
