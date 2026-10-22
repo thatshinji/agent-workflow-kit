@@ -21,7 +21,7 @@ Refs #<!-- issue number — never Fixes/Closes; issues are closed manually after
 <!-- 实际运行过的命令及其结果。没有输出的主张不算证据。 -->
 
 ```text
-…
+
 ```
 
 ## Review findings addressed (if any) / 已处理的评审发现（如有）
