@@ -39,6 +39,8 @@ Start with the [worked example](examples/invite-code/) if you want to see the wo
 
 ## Getting started
 
+**Hands-on path**: follow the [Quickstart](docs/quickstart.md) ([简体中文](docs/quickstart.zh-CN.md)) — a 30-minute guided adoption: copy the templates, fill the eight slots, wire the gate, run your first feature. The conceptual path:
+
 1. Read the [blueprint](docs/blueprint.md) — it defines the 12 core mechanisms, the five adoption phases, and the per-stack adaptation tables.
 2. Copy the [templates](templates/) into your repository (the templates README maps each file to its destination) and fill in the eight project "slots" (data-isolation dimension, project invariants, failure definitions, high-risk paths, ★ decisions, mandatory failure branches, design source, risk grading).
 3. Wire the [gate script](scripts/) into CI, then run one small real feature through the full pipeline before scaling up.
