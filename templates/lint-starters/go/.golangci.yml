@@ -1,0 +1,26 @@
+# golangci-lint starter config.
+# Copy to your backend root as .golangci.yml.
+# Philosophy: a small set of bug-catching linters, enforced only on new
+# and changed code, so the rules have teeth from day one without a
+# big-bang cleanup of legacy code. See ../README.md.
+
+run:
+  timeout: 5m
+
+linters:
+  # Start from nothing and enable only the base set below. Style-heavy
+  # packs stay off until this set runs clean.
+  disable-all: true
+  enable:
+    - errcheck     # errors that are returned but never checked — silent failures
+    - gosimple     # code that can be written more simply (subset of staticcheck)
+    - govet        # suspicious constructs: wrong printf verbs, bad struct tags, …
+    - ineffassign  # assignments whose value is never used — usually a bug
+    - staticcheck  # the full staticcheck bug-and-correctness suite
+    - unused       # unused constants, variables, functions, and types
+
+issues:
+  # Only report findings on lines changed since origin/master.
+  # Pre-existing issues are exempt; they get fixed when a file is touched.
+  # Change this if your default branch has another name.
+  new-from-rev: origin/master
