@@ -206,10 +206,11 @@ class TestBootstrap(InstallTestCase):
         source = REAL_KIT_ROOT / "templates/AGENTS.md"
         self.assertEqual(agents.read_bytes(), source.read_bytes())
 
-    def test_default_version_is_the_pinned_constant(self):
+    def test_default_version_is_latest(self):
         code, _out, _err = self.install()
         self.assertEqual(code, 0)
-        self.assertEqual(self.fetch_versions, [installer.KIT_VERSION])
+        self.assertEqual(installer.DEFAULT_KIT_VERSION, "latest")
+        self.assertEqual(self.fetch_versions, ["latest"])
 
     def test_kit_version_flag_is_passed_through(self):
         code, _out, _err = self.install("--kit-version", "v9.9.9-test")

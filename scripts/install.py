@@ -17,11 +17,13 @@ kit next to itself (for example when piped in over stdin), it downloads
 the kit source archive from GitHub into a temp directory, installs from
 there, and cleans up. Adoption becomes a single line:
 
-    curl -fsSL https://raw.githubusercontent.com/thatshinji/agent-workflow-kit/v0.3.2/scripts/install.py | python3 - [--lang zh-CN]
+    curl -fsSL https://raw.githubusercontent.com/thatshinji/agent-workflow-kit/v0.3.3/scripts/install.py | python3 - [--lang zh-CN]
 
-Bootstrap downloads the release named by --kit-version (default v0.3.2;
-"latest" resolves the newest release through the GitHub API). The flag
-is ignored when a local kit is found next to the script.
+By default the bootstrap downloads the newest release (resolved
+through the GitHub API), so the one-liner always installs the current
+kit. Pass --kit-version <tag> only to deliberately install a specific
+release instead. The flag is ignored when a local kit is found next to
+the script.
 
 What lands where (target side):
 
@@ -43,9 +45,10 @@ Options:
                  go -> .golangci.yml, web -> eslint.config.mjs,
                  swift -> .swiftlint.yml, python -> ruff.toml.
   --kit-version  Bootstrap mode only: which kit release to download
-                 (a tag such as v0.3.2, or "latest" for the newest
-                 release). Ignored when the script runs from a local
-                 clone, where the files next to it are the source.
+                 (default: the newest release; pass a release tag to
+                 choose a specific one instead). Ignored when the script
+                 runs from a local clone, where the files next to it are
+                 the source.
 
 Safety:
 
@@ -72,7 +75,10 @@ import zipfile
 from pathlib import Path
 
 KIT_REPO = "thatshinji/agent-workflow-kit"
-KIT_VERSION = "v0.3.2"
+KIT_VERSION = "v0.3.3"
+# What the bootstrap installs when --kit-version is not given: always the
+# newest release, so a copied one-liner never installs an old kit.
+DEFAULT_KIT_VERSION = "latest"
 
 ARCHIVE_URL_TEMPLATE = "https://github.com/{repo}/archive/refs/tags/{tag}.zip"
 LATEST_RELEASE_API = "https://api.github.com/repos/{repo}/releases/latest"
@@ -172,7 +178,7 @@ def _latest_tag() -> str:
 def fetch_kit(version: str, dest: Path) -> Path:
     """Download the kit source for `version` into dest; return its root.
 
-    `version` is a release tag (e.g. "v0.3.2") or "latest". Raises
+    `version` is "latest" (the newest release) or a release tag. Raises
     BootstrapError on any network or archive failure. Kept small and
     module-level so tests can substitute it and never touch the network.
     """
@@ -306,10 +312,10 @@ def main(argv: list[str] | None = None) -> int:
         help="overwrite existing target files (each overwrite is reported)",
     )
     parser.add_argument(
-        "--kit-version", default=KIT_VERSION, metavar="TAG",
-        help="bootstrap mode only: kit release to download (a tag such "
-        f"as {KIT_VERSION}, or 'latest'); ignored when a local kit is "
-        f"found next to this script (default: {KIT_VERSION})",
+        "--kit-version", default=DEFAULT_KIT_VERSION, metavar="TAG",
+        help="bootstrap mode only: kit release to download (default: "
+        "latest, the newest release; pass a tag to choose a specific "
+        "one); ignored when a local kit is found next to this script",
     )
     args = parser.parse_args(argv)
 
