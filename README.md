@@ -49,7 +49,7 @@ Start with the [worked example](examples/invite-code/) if you want to see the wo
 
 ## Status
 
-**v0.1.0** — first public release. Blueprint, full template set, gate script, and one complete worked example are in. On the roadmap: the blueprint in English, more examples (Delta-mode second platform, hotfix flow), and lint starter configs per stack.
+**v0.2.0** — Full Chinese documentation: every document in the kit now ships with a 简体中文 edition beside the English original. (v0.1.0 was the first public release: blueprint, full template set, gate script, and one complete worked example.) On the roadmap: the blueprint in English, more examples (Delta-mode second platform, hotfix flow), and lint starter configs per stack.
 
 This repository follows its own workflow where it applies: its CI runs the kit's test suites on every push and PR, and PRs use the kit's conventions (`Refs #`, risk self-assessment, evidence).
 
