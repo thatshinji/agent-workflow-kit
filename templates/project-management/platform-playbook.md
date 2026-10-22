@@ -1,3 +1,5 @@
+English | [简体中文](platform-playbook.zh-CN.md)
+
 <!--
   TEMPLATE: docs/project-management/<platform>-playbook.md — one per platform,
   created when that platform's development starts. It defines how the new

@@ -1,3 +1,5 @@
+English | [简体中文](contract-checklist.zh-CN.md)
+
 <!--
   TEMPLATE: docs/project-management/contract-checklist.md
   The checklist a writer walks, item by item, when drafting a backend/API

@@ -1,3 +1,5 @@
+English | [简体中文](README.zh-CN.md)
+
 <!--
   TEMPLATE: docs/project-management/README.md
   The project-management scheme: one task pool, milestones by exit criteria,

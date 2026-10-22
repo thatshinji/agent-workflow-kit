@@ -1,3 +1,5 @@
+English | [简体中文](tdd-workflow-spec.zh-CN.md)
+
 <!--
   TEMPLATE: docs/project-management/tdd-workflow-spec.md
   The TDD loop that runs inside pipeline step 5, plus the machine gate that

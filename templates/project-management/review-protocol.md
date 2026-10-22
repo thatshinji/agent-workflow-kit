@@ -1,3 +1,5 @@
+English | [简体中文](review-protocol.zh-CN.md)
+
 <!--
   TEMPLATE: docs/project-management/review-protocol.md
   The adjudication protocol behind REVIEW.md: how findings are formatted,
