@@ -22,7 +22,7 @@ Blank templates for the agent-workflow-kit documents. Each template contains str
 
 ## Lint starters
 
-[lint-starters/](lint-starters/) holds per-stack starter configs (Go, Web/TypeScript, Swift, Python) that implement the coding-standards decisions — new and changed lines only, key rules at error level, tool versions pinned in CI. `scripts/install.py --stack <name>` drops one into your repository root.
+[lint-starters/](lint-starters/) holds per-stack starter configs (Go, Web/TypeScript, Swift, Python) that implement the coding-standards decisions — new and changed lines only, key rules at error level, exact tool versions in CI. `scripts/install.py --stack <name>` drops one into your repository root.
 
 ## Filling order for a new project
 

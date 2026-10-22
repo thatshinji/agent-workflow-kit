@@ -24,7 +24,7 @@ agent-workflow-kit 各文档的空白模板。每份模板只包含结构、填�
 
 ## lint 起步包
 
-[lint-starters/](lint-starters/) 里是各技术栈的起步配置（Go、Web/TypeScript、Swift、Python），落实编码规范的三项决策——只拦新增与改动行、关键规则 error 级、工具版本在 CI 里钉死。`scripts/install.py --stack <名称>` 可把对应配置直接铺到你的仓库根目录。
+[lint-starters/](lint-starters/) 里是各技术栈的起步配置（Go、Web/TypeScript、Swift、Python），落实编码规范的三项决策——只拦新增与改动行、关键规则 error 级、工具版本在 CI 里写明完整版本号。`scripts/install.py --stack <名称>` 可把对应配置直接铺到你的仓库根目录。
 
 ## 新项目的填写顺序
 
